@@ -11,17 +11,21 @@ from strands.tools.mcp import MCPClient
 # Ensure your credentials are populated in the environment
 env_config = {
     "JIRA_BASE_URL": os.getenv("JIRA_BASE_URL"),
+    "JIRA_EMAIL": os.getenv("JIRA_EMAIL") or os.getenv("JIRA_USER_EMAIL"),
     "JIRA_USER_EMAIL": os.getenv("JIRA_USER_EMAIL"),
     "JIRA_API_TOKEN": os.getenv("JIRA_API_TOKEN")
 }
 
+current_dir = os.path.dirname(os.path.abspath(__file__))
+mcp_server_path = os.path.join(current_dir, "node_modules", "@orengrinker", "jira-mcp-server", "dist", "index.js")
+
 # 1. Initialize the MCP Client pointing to the Jira MCP server package
-# We use 'npx' to execute the server dynamically over stdio transport
+# We use 'node' to execute the locally installed server since the package lacks a bin mapping for 'npx'
 jira_mcp_client = MCPClient(
     lambda: stdio_client(
         StdioServerParameters(
-            command="npx",
-            args=["-y", "@orengrinker/jira-mcp-server"],
+            command="node",
+            args=[mcp_server_path],
             env=env_config
         )
     )
@@ -43,11 +47,12 @@ def divide(x: Annotated[float, "The numerator"], y: Annotated[float, "The denomi
     return x / y
 
 def create_agent():
-    # 2. Use a context manager to handle connection lifecycle automatically
-    with jira_mcp_client:
-    
-        # Discover all capabilities exposed by the server (e.g., search_issues, create_issue, add_comment)
-        jira_tools = jira_mcp_client.list_tools_sync()
-        """Creates and returns an agent with some basic math tools and jira access"""
-        agent = Agent(tools=[jira_tools, cosine, sine, divide], model="qwen.qwen3-vl-235b-a22b")
-        return agent
+    # Start the MCP client manually if not already active
+    if not jira_mcp_client._is_session_active():
+        jira_mcp_client.start()
+
+    # Discover all capabilities exposed by the server (e.g., search_issues, create_issue, add_comment)      
+    jira_tools = jira_mcp_client.list_tools_sync()
+    """Creates and returns an agent with some basic math tools and jira access"""
+    agent = Agent(tools=[*jira_tools, cosine, sine, divide], model="qwen.qwen3-vl-235b-a22b")
+    return agent
