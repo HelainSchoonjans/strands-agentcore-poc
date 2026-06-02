@@ -1,5 +1,7 @@
 # README
 
+This folder is the exercise of workshop: https://builder.aws.com/content/38oLfyfksQOGKf9TxnJSAEIOVeB/building-agentic-demo-apps-with-strands-agents
+
 ## Prerequisite
 
 Have your AWS Env variables set
