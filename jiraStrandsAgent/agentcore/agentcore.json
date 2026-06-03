@@ -1,0 +1,74 @@
+{
+  "$schema": "https://schema.agentcore.aws.dev/v1/agentcore.json",
+  "name": "jiraStrandsAgent",
+  "version": 1,
+  "managedBy": "CDK",
+  "tags": {
+    "agentcore:created-by": "agentcore-cli",
+    "agentcore:project-name": "jiraStrandsAgent"
+  },
+  "runtimes": [
+    {
+      "name": "JiraAgent",
+      "build": "CodeZip",
+      "entrypoint": "main.py",
+      "codeLocation": "app/JiraAgent/",
+      "runtimeVersion": "PYTHON_3_14",
+      "networkMode": "PUBLIC",
+      "protocol": "HTTP"
+    }
+  ],
+  "memories": [
+    {
+      "name": "JiraAgentMemory",
+      "eventExpiryDuration": 30,
+      "strategies": []
+    }
+  ],
+  "credentials": [
+    {
+      "authorizerType": "OAuthCredentialProvider",
+      "name": "JiraAuth",
+      "discoveryUrl": "https://auth.atlassian.com/.well-known/openid-configuration",
+      "scopes": [
+        "read:account",
+        "read:jira-user",
+        "read:jira-work",
+        "read:me"
+      ],
+      "vendor": "CustomOauth2"
+    }
+  ],
+  "evaluators": [],
+  "onlineEvalConfigs": [],
+  "agentCoreGateways": [
+    {
+      "name": "JiraGateway",
+      "description": "Gateway for JiraGateway",
+      "targets": [
+        {
+          "name": "JiraCloud",
+          "targetType": "openApiSchema",
+          "outboundAuth": {
+            "type": "OAUTH",
+            "credentialName": "JiraAuth"
+          },
+          "schemaSource": {
+            "inline": {
+              "path": "swagger-v3.v3.json"
+            }
+          }
+        }
+      ],
+      "authorizerType": "NONE",
+      "enableSemanticSearch": true,
+      "exceptionLevel": "NONE"
+    }
+  ],
+  "policyEngines": [],
+  "configBundles": [],
+  "abTests": [],
+  "httpGateways": [],
+  "harnesses": [],
+  "datasets": []
+}
