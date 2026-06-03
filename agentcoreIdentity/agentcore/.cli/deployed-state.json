@@ -1,3 +1,24 @@
 {
-  "targets": {}
+  "targets": {
+    "default": {
+      "resources": {
+        "runtimes": {
+          "MyJiraAgent": {
+            "runtimeId": "agentcoreIdentity_MyJiraAgent-CIHATJ8V5I",
+            "runtimeArn": "arn:aws:bedrock-agentcore:eu-west-1:271936101495:runtime/agentcoreIdentity_MyJiraAgent-CIHATJ8V5I",
+            "roleArn": "arn:aws:iam::271936101495:role/AgentCore-agentcoreIdenti-ApplicationAgentMyJiraAge-HboL4Fkz81ML"
+          }
+        },
+        "credentials": {
+          "AgentCoreIdentityQuickStartProvider": {
+            "credentialProviderArn": "arn:aws:bedrock-agentcore:eu-west-1:271936101495:token-vault/default/oauth2credentialprovider/AgentCoreIdentityQuickStartProvider",
+            "clientSecretArn": "arn:aws:secretsmanager:eu-west-1:271936101495:secret:bedrock-agentcore-identity!default/oauth2/AgentCoreIdentityQuickStartProvider-69c99eb2-rZQe0N",
+            "callbackUrl": "https://bedrock-agentcore.eu-west-1.amazonaws.com/identities/oauth2/callback/21e92ccd-9eaa-4782-a257-8ab7e3705054"
+          }
+        },
+        "stackName": "AgentCore-agentcoreIdentity-default",
+        "deployHash": "8d6ba0254ed83ba3"
+      }
+    }
+  }
 }
