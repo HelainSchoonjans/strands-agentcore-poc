@@ -19,7 +19,14 @@
     }
   ],
   "memories": [],
-  "credentials": [],
+  "credentials": [
+    {
+      "authorizerType": "OAuthCredentialProvider",
+      "name": "AgentCoreIdentityQuickStartProvider",
+      "discoveryUrl": "https://bedrock-agentcore.eu-central-1.amazonaws.com/identities/oauth2/callback/772ab4b4-0ed3-4602-bfaf-63e1081432bd",
+      "vendor": "CustomOauth2"
+    }
+  ],
   "evaluators": [],
   "onlineEvalConfigs": [],
   "agentCoreGateways": [],
