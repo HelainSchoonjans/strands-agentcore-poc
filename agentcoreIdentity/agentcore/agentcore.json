@@ -7,26 +7,9 @@
     "agentcore:created-by": "agentcore-cli",
     "agentcore:project-name": "agentcoreIdentity"
   },
-  "runtimes": [
-    {
-      "name": "MyJiraAgent",
-      "build": "CodeZip",
-      "entrypoint": "main.py",
-      "codeLocation": "app/MyJiraAgent/",
-      "runtimeVersion": "PYTHON_3_14",
-      "networkMode": "PUBLIC",
-      "protocol": "HTTP"
-    }
-  ],
+  "runtimes": [],
   "memories": [],
-  "credentials": [
-    {
-      "authorizerType": "OAuthCredentialProvider",
-      "name": "AgentCoreIdentityQuickStartProvider",
-      "discoveryUrl": "https://auth.atlassian.com/.well-known/openid-configuration",
-      "vendor": "CustomOauth2"
-    }
-  ],
+  "credentials": [],
   "evaluators": [],
   "onlineEvalConfigs": [],
   "agentCoreGateways": [],
