@@ -30601,7 +30601,7 @@
   },
   "servers": [
     {
-      "url": "https://your-domain.atlassian.net"
+      "url": "https://api.atlassian.com/ex/jira/2012da4b-9a19-4bb6-9ce9-1ce01b1ea24c"
     }
   ],
   "tags": [
