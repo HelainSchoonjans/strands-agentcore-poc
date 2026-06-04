@@ -2,7 +2,7 @@
 
 Create a gateway to jira for local testing. Let's note that a production setup should have some type of authorizer!!!
 
-    agentcore add gateway   --name JiraGateway   --authorizer-type NONE --runtimes JiraStrandsAgent
+    agentcore add gateway   --name JiraGateway   --authorizer-type AWS_IAM --runtimes JiraStrandsAgent
 	
 	
 ## Add credential-name
