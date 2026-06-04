@@ -103,7 +103,7 @@ def agent_factory():
     def get_or_create_agent(session_id, user_id):
         key = f"{session_id}/{user_id}"
         if key not in cache:
-            with jira_mcp_client:
+            def create_agent():
                 # Pull down the paginated Jira tool definitions (create_ticket, etc.)
                 jira_tools = get_full_tools_list(jira_mcp_client)
                 # Safely merge global tools with dynamic JIRA tools
@@ -115,6 +115,12 @@ def agent_factory():
                     system_prompt=DEFAULT_SYSTEM_PROMPT,
                     tools=combined_tools
                 )
+            
+            if jira_mcp_client._is_session_active():
+                create_agent()
+            else:
+                with jira_mcp_client:
+                    create_agent()
         return cache[key]
     return get_or_create_agent
 get_or_create_agent = agent_factory()
@@ -126,15 +132,17 @@ async def invoke(payload, context):
 
     session_id = getattr(context, 'session_id', 'default-session')
     user_id = getattr(context, 'user_id', 'default-user')
-    agent = get_or_create_agent(session_id, user_id)
+    
+    with jira_mcp_client:
+        agent = get_or_create_agent(session_id, user_id)
 
-    # Execute and format response
-    stream = agent.stream_async(payload.get("prompt"))
+        # Execute and format response
+        stream = agent.stream_async(payload.get("prompt"))
 
-    async for event in stream:
-        # Handle Text parts of the response
-        if "data" in event and isinstance(event["data"], str):
-            yield event["data"]
+        async for event in stream:
+            # Handle Text parts of the response
+            if "data" in event and isinstance(event["data"], str):
+                yield event["data"]
 
 
 if __name__ == "__main__":
